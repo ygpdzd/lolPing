@@ -72,6 +72,7 @@ function start(): void {
   serveAppScheme({
     rendererRoot: process.env.ELECTRON_RENDERER_URL ? null : join(__dirname, '../renderer'), // development pages come from Vite
     emoteDirs: () => [library.dir],
+    pingIconDir: join(settingsDir(), 'ping-icons', 'battlegrounds'),
   });
   if (IS_MAC) {
     app.dock?.hide(); // a menu bar app: the Dock icon only shows while settings are open

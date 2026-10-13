@@ -7,7 +7,7 @@ A fork of [darrenprx/lolPing](https://github.com/darrenprx/lolPing), extending t
 ## What's new in 0.6.0
 
 - League of Legends: original wheel, animations and sounds preserved.
-- Battlegrounds Duos: Yes, No, Question, Pass, plus Keep, Refresh, Tier up and Triple callouts. Original symbolic icons, not Blizzard artwork.
+- Battlegrounds Duos: Yes, No, Question, Pass, plus Keep, Refresh, Tier up and Triple callouts. The first four can use locally extracted Hearthstone teammate-ping artwork when installed; otherwise portable symbols are used. Blizzard artwork is never committed or shared.
 - Co-op/FPS: Danger, Group, Move, Attack, Help, Wait, Search and Done.
 - Up to 64 custom markers with a name, symbol/emoji, color and optional bundled sound. Create, edit, delete and assign them to wheel slots or the center.
 - Validated JSON import/export for sharing or backing up layouts and the custom library.
@@ -19,7 +19,7 @@ Open **Settings → Wheel → Games & markers**, choose a preset, then hold **Al
 
 Preset changes replace the active wheel but preserve your custom library. Export before changing a customized layout. Import replaces both the wheel and library. A marker in use cannot be deleted until it is replaced in every slot and the center. Custom images/animations remain available in the upstream **Emotes** editor; the new ping editor accepts text/emoji and bundled sounds, not arbitrary SVG/audio files.
 
-**This is a desktop overlay, not a game integration.** It does not detect game state, inject input, or trigger native Hearthstone pings. Exclusive fullscreen and elevated windows may limit overlays/input; try borderless window mode. Original upstream clients ignore new markers. Real in-game multiplayer use still needs testing on both peers.
+**This is a desktop overlay, not a game integration.** The optional native-art override is local-only: it reads only the four allowlisted PNGs placed under `%APPDATA%/MultiPing/ping-icons/battlegrounds/`, never game state or network files. It does not detect game state, inject input, or trigger native Hearthstone pings. Exclusive fullscreen and elevated windows may limit overlays/input; try borderless window mode. Original upstream clients ignore new markers. Real in-game multiplayer use still needs testing on both peers.
 
 ## Develop / build
 

@@ -90,7 +90,7 @@ function decodeMarker(id: string): PingDef | undefined {
 }
 const escapeXml = (s: string): string => s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&apos;' }[c]!));
 /** Only our own SVG template is allowed; user text is escaped, never interpreted as markup. */
-export function pingIconUrl(p: PingDef): string {
+export function pingFallbackIconUrl(p: PingDef): string {
   if (!p.symbol) return textureUrl(p.icon);
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 96 96"><rect x="8" y="8" width="80" height="80" rx="24" fill="#17212f" stroke="${p.color}" stroke-width="5"/><text x="48" y="51" text-anchor="middle" dominant-baseline="middle" font-family="Segoe UI,Apple Color Emoji,Segoe UI Emoji,sans-serif" font-size="${[...p.symbol].length > 2 ? 25 : 42}" font-weight="700" fill="${p.color}">${escapeXml(p.symbol)}</text></svg>`;
   return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
@@ -98,4 +98,17 @@ export function pingIconUrl(p: PingDef): string {
 export function normalizeCustomPings(raw: unknown): PingId[] {
   if (!Array.isArray(raw)) return [];
   return [...new Set(raw.filter((v): v is PingId => typeof v === 'string' && v.startsWith('mark:') && isPingId(v)))].slice(0, MAX_CUSTOM_PINGS);
+}
+
+/** Exact preset identities only: user-created lookalikes must not unexpectedly change art. */
+export const BATTLEGROUNDS_NATIVE_MARKERS = [
+  { key: 'check', asset: 'TeammatePing_Check', id: createMarker({ name: '确认 / Yes', symbol: '✓', color: '#5bdb95', sound: '' }) },
+  { key: 'x', asset: 'TeammatePing_X', id: createMarker({ name: '不要 / No', symbol: '✕', color: '#ff647c', sound: '' }) },
+  { key: 'question', asset: 'TeammatePing_Question', id: createMarker({ name: '疑问 / Question', symbol: '?', color: '#ffd166', sound: '' }) },
+  { key: 'warp', asset: 'TeammatePing_Warp', id: createMarker({ name: '传递 / Pass', symbol: '↗', color: '#b999ff', sound: '' }) },
+] as const;
+
+export function pingIconUrl(p: PingDef): string {
+  const native = BATTLEGROUNDS_NATIVE_MARKERS.find((m) => m.id === p.id);
+  return native ? `lolping://ping-icons/battlegrounds/${native.key}.png` : pingFallbackIconUrl(p);
 }

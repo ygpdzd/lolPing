@@ -63,3 +63,15 @@ describe('portable multi-game markers', () => {
     expect(() => seal(key, encodeMessage({ ...message, ping: longest }))).not.toThrow();
   });
 });
+
+describe('local Battlegrounds native art mapping', () => {
+  it('uses only the four allowlisted local URLs for the built-in first four markers', async () => {
+    const { BATTLEGROUNDS_NATIVE_MARKERS } = await import('../../src/shared/pings');
+    const ids = PING_PROFILES[1].wheel.slice(0, 4);
+    expect(ids).toEqual(BATTLEGROUNDS_NATIVE_MARKERS.map((m) => m.id));
+    expect(BATTLEGROUNDS_NATIVE_MARKERS.map((m) => m.asset)).toEqual([
+      'TeammatePing_Check', 'TeammatePing_X', 'TeammatePing_Question', 'TeammatePing_Warp',
+    ]);
+    for (const id of ids) expect(pingIconUrl(pingById(id)!)).toMatch(/^lolping:\/\/ping-icons\/battlegrounds\/(check|x|question|warp)\.png$/);
+  });
+});

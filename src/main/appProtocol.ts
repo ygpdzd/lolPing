@@ -1,3 +1,5 @@
+import { readFile } from 'node:fs/promises';
+import { BATTLEGROUNDS_NATIVE_MARKERS, pingById, pingFallbackIconUrl } from '../shared/pings';
 import { net, protocol } from 'electron';
 import { pathToFileURL } from 'node:url';
 import { isFile } from './fileState';
@@ -48,9 +50,10 @@ async function fetchUncached(file: string): Promise<Response> {
 }
 
 /** Host `emotes` from `emoteDirs()`; host `app` from `rendererRoot` when set (production); anything else is not found. */
-export function serveAppScheme(opts: { rendererRoot: string | null; emoteDirs: () => readonly string[] }): void {
+export function serveAppScheme(opts: { rendererRoot: string | null; emoteDirs: () => readonly string[]; pingIconDir?: string }): void {
   protocol.handle(APP_SCHEME, (request) => {
     const url = new URL(request.url);
+    if (url.host === 'ping-icons') return servePingIcon(url.pathname, opts.pingIconDir);
     if (url.host === 'emotes') {
       const file = resolveEmoteFile(opts.emoteDirs(), url.pathname);
       return file ? fetchUncached(file) : notFound();
@@ -61,4 +64,23 @@ export function serveAppScheme(opts: { rendererRoot: string | null; emoteDirs: (
     }
     return notFound();
   });
+}
+
+/** Fixed allowlist, never a user-provided path. Missing/unreadable art returns a portable SVG. */
+export async function servePingIcon(path: string, dir?: string): Promise<Response> {
+  const marker = BATTLEGROUNDS_NATIVE_MARKERS.find((m) => path === `/battlegrounds/${m.key}.png`);
+  if (!marker) return notFound();
+  if (dir) {
+    const file = resolveInside(dir, `/${marker.key}.png`);
+    if (file) {
+      try {
+        const bytes = await readFile(file);
+        if (bytes.length <= 2_000_000 && bytes.subarray(0, 8).equals(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]))) {
+          return new Response(new Uint8Array(bytes), { headers: { 'Content-Type': 'image/png', 'Cache-Control': 'no-store' } });
+        }
+      } catch { /* A missing local asset is normal on teammates' machines. */ }
+    }
+  }
+  const svg = decodeURIComponent(pingFallbackIconUrl(pingById(marker.id)!).split(',')[1]);
+  return new Response(svg, { headers: { 'Content-Type': 'image/svg+xml', 'Cache-Control': 'no-store' } });
 }
