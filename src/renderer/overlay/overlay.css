@@ -109,3 +109,7 @@ html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; background:
 }
 @keyframes toastIn { from { transform: translateY(24px); opacity: 0 } to { transform: none; opacity: 1 } }
 @keyframes toastOut { to { transform: translateY(12px); opacity: 0 } }
+
+/* Portable game markers: label stays separate from the room member's tag. */
+.ping .marker-label { position: absolute; top: calc(var(--size) * .46); left: 0; transform: translateX(-50%); max-width: 260px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 3px 9px; border: 1px solid var(--c); border-radius: 6px; background: #17212fee; color: #fff; font: 600 13px/20px "Segoe UI", sans-serif; animation: life var(--dur) linear forwards; }
+.ping.portable-marker .tag { top: calc(var(--size) * .46 + 32px); }

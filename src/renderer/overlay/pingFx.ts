@@ -1,5 +1,5 @@
 import type { PingTag } from '../../shared/ipc';
-import { FALLBACK_TEXTURE, textureUrl, type PingDef } from '../../shared/pings';
+import { FALLBACK_TEXTURE, pingIconUrl, textureUrl, type PingDef } from '../../shared/pings';
 import { TAG_COLORS } from '../../shared/roomColors';
 
 /** Safety ceiling: past this many pings on screen the oldest go early, so a ping flood can't bog the overlay down. */
@@ -31,7 +31,7 @@ const div = (cls: string): HTMLDivElement => {
 
 /** Adds one animated ping at (x, y) and removes it when its animation ends. */
 export function spawnPing(layer: HTMLElement, def: PingDef, x: number, y: number, opts: PingFxOptions): void {
-  const root = div('ping');
+  const root = div(def.symbol ? 'ping portable-marker' : 'ping');
   root.style.left = `${x}px`;
   root.style.top = `${y}px`;
   root.style.setProperty('--c', def.color);
@@ -40,7 +40,17 @@ export function spawnPing(layer: HTMLElement, def: PingDef, x: number, y: number
   root.append(div('ground'), div('ring'), div('ring r2'), div('ring r3'));
 
   const art = div('art');
-  if (def.art.length === 2) {
+  if (def.symbol) {
+    const pop = div('pop');
+    const icon = document.createElement('img');
+    icon.src = pingIconUrl(def);
+    icon.alt = def.name;
+    pop.append(icon);
+    art.append(pop);
+    const label = div('marker-label');
+    label.textContent = def.name;
+    root.append(label);
+  } else if (def.art.length === 2) {
     const clash = div('clash');
     clash.append(img(def.art[0], 'a1'), img(def.art[1], 'a2'));
     art.append(clash, div('flash'));

@@ -118,3 +118,31 @@ main.content { overflow: auto; padding: 4px 28px 28px 20px; }
 .card.update.failed { border-color: #ff9c48; }
 .card.update.failed .icon { color: #ff9c48; }
 .updateBar { margin-top: 4px; }
+
+/* Multi-game presets and portable custom marker editor. */
+.profile-panel { margin: 12px 0 20px; padding: 22px; border: 1px solid #8884; border-radius: 12px; }
+.profile-heading { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.profile-heading h2 { margin: 0 0 8px; font-size: 20px; }
+.profile-heading p, .profile-note { opacity: .75; line-height: 1.6; font-size: 13px; }
+.profile-badge { color: #b999ff; background: #8860dd20; border: 1px solid #8860dd60; padding: 4px 8px; border-radius: 6px; font-size: 11px; letter-spacing: 1px; }
+.profile-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin: 16px 0; }
+.profile-card { padding: 16px 12px; text-align: left; color: inherit; background: transparent; border: 1px solid #8885; border-radius: 9px; cursor: pointer; }
+.profile-card.selected { border-color: #a481f5; background: #8860dd18; box-shadow: inset 0 0 0 1px #a481f5; }
+.profile-card:focus-visible { outline: 2px solid #a481f5; outline-offset: 3px; }
+.profile-symbols { display: flex; gap: 6px; margin-top: 14px; }
+.profile-symbols img { width: 30px; height: 30px; object-fit: contain; }
+.marker-form { border: 1px solid #8884; border-radius: 8px; padding: 14px; display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; }
+.marker-form label { display: flex; flex-direction: column; gap: 6px; font-size: 12px; }
+.marker-form input, .marker-form select { box-sizing: border-box; height: 32px; max-width: 190px; border: 1px solid #8888; border-radius: 4px; padding: 3px 7px; color: inherit; background: transparent; font: inherit; }
+.marker-form select option { color: #17212f; background: white; }
+.marker-form input[type=color] { width: 60px; padding: 2px; }
+.custom-marker-list { display: flex; flex-direction: column; gap: 6px; margin-top: 14px; max-height: 260px; overflow: auto; }
+.custom-marker { display: flex; gap: 10px; align-items: center; padding: 5px; }
+.custom-marker img { width: 32px; height: 32px; }
+.custom-marker span { flex: 1; overflow-wrap: anywhere; }
+.profile-actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-top: 16px; }
+.profile-actions small { opacity: .7; }
+.profile-import { display: flex; flex-direction: column; gap: 5px; font-size: 12px; }
+.profile-import input { max-width: 220px; }
+.profile-error { color: #ed6578; }
+@media (max-width: 760px) { .profile-grid { grid-template-columns: 1fr; } }

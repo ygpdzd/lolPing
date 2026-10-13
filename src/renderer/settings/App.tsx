@@ -1,3 +1,5 @@
+import { profileById, profilePool } from '../../shared/pingProfiles';
+import { PingProfileSection } from './components/PingProfileSection';
 import { Dropdown, FluentProvider, Option, webDarkTheme, webLightTheme } from '@fluentui/react-components';
 import {
   ArrowMove24Regular, ArrowSync24Regular, CursorClick24Regular, DataPie24Regular, Games24Regular, Info24Regular, Keyboard24Regular, MusicNote224Regular,
@@ -8,7 +10,7 @@ import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { LANGUAGE_NAMES, LANGUAGE_PREFS, resolveLang, strings, type LanguagePref, type Strings } from '../../shared/i18n';
 import type { AppStatus } from '../../shared/ipc';
 import { hotkeyParts } from '../../shared/keys';
-import { ALL_PINGS, DEFAULT_CLICK_PING, DEFAULT_WHEEL, textureUrl, type PingId } from '../../shared/pings';
+import { pingById, pingIconUrl, textureUrl, type LeaguePingId, type PingId } from '../../shared/pings';
 import { triggerLabel, type Settings } from '../../shared/settings';
 import type { WheelPatch } from '../../shared/wheelLayout';
 import { api } from './api';
@@ -95,8 +97,8 @@ function SettingsPage({ settings: s, status, update }: { settings: Settings; sta
   const [hotkeyError, setHotkeyError] = useState<string | null>(null);
   const mouseTrigger = s.trigger === 'mouse4' || s.trigger === 'mouse5';
   const customTrigger = typeof s.trigger === 'object';
-  const pingPool: PoolItem<PingId>[] = ALL_PINGS.map((p) => ({
-    id: p.id, icon: textureUrl(p.icon), name: t.pingNames[p.id], badge: NEW_PINGS.has(p.id) ? t.wheelNew : undefined,
+  const pingPool: PoolItem<PingId>[] = profilePool(s.pingProfile, s.wheel, s.clickPingId, s.customPings).map((id) => pingById(id)!).map((p) => ({
+    id: p.id, icon: pingIconUrl(p), name: t.pingNames[p.id as LeaguePingId] ?? p.name, badge: NEW_PINGS.has(p.id) ? t.wheelNew : undefined,
   }));
 
   useEffect(() => {
@@ -192,8 +194,9 @@ function SettingsPage({ settings: s, status, update }: { settings: Settings; sta
           checked={s.tickSound} onChange={(v) => void update({ tickSound: v })} />
 
         <div className="section" id="wheel">{t.navWheel}</div>
+        <PingProfileSection settings={s} update={update} />
         <WheelEditor wheel={s.wheel} center={s.clickPingId} centerOn={s.clickPing} trigger={trigger} pool={pingPool}
-          defaults={{ wheel: DEFAULT_WHEEL, center: DEFAULT_CLICK_PING }}
+          defaults={{ wheel: profileById(s.pingProfile).wheel, center: profileById(s.pingProfile).center }}
           labels={{ title: t.wheelTitle, desc: t.wheelDesc(trigger), poolTitle: t.allPings, poolDesc: t.allPingsDesc }}
           onChange={(patch) => void update(pingPatch(patch))} onPreview={(id) => void api.previewPing(id)} />
 

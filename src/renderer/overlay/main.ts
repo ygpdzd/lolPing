@@ -4,7 +4,7 @@ import {
   type EmoteArt, type EmoteRef,
 } from '../../shared/emotes';
 import {
-  DEFAULT_CLICK_PING, TICK_SOUND, allSoundNames, allTextureNames, pingById, pingsFor, soundUrl, textureUrl, type PingDef,
+  DEFAULT_CLICK_PING, TICK_SOUND, allSoundNames, allTextureNames, pingById, pingsFor, soundUrl, pingIconUrl, textureUrl, type PingDef,
 } from '../../shared/pings';
 import type { PingTag } from '../../shared/ipc';
 import type { WheelKind } from '../../shared/protocol';
@@ -39,7 +39,7 @@ const tick = (): void => {
 const pingWheel = new Wheel(pingSvg, 'PING', textureUrl('generic_ping'), tick);
 const emoteWheel = new Wheel(emoteSvg, 'EMOTE', emoteIconUrl(DEFAULT_CLICK_EMOTE), tick);
 
-const pingItem = (p: PingDef): WheelItem => ({ key: p.id, icon: textureUrl(p.icon) });
+const pingItem = (p: PingDef): WheelItem => ({ key: p.id, icon: pingIconUrl(p) });
 
 /** A wheel slot's icon: the bundled emote's, the imported emote's still, or the generic ping for one that isn't known. */
 function emoteItem(ref: EmoteRef): WheelItem {
@@ -66,7 +66,7 @@ applySettings(settings);
 
 function ping(def: PingDef, x: number, y: number, tag?: PingTag): void {
   spawnPing(pingLayer, def, x, y, { sizePx: settings.pingSizePx, durationS: settings.pingDurationS, tag });
-  sounds.play(def.sound, volume());
+  if (def.sound) sounds.play(def.sound, volume());
 }
 
 function emote(owner: string, art: EmoteArt, x: number, y: number, tag?: PingTag): void {

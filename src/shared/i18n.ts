@@ -1,4 +1,4 @@
-import type { PingId } from './pings';
+import type { LeaguePingId } from './pings';
 import type { Platform } from './platform';
 import type { MemberPath } from './room';
 
@@ -187,7 +187,7 @@ const en = {
     danger: 'Danger', push: 'Push', omw: 'On My Way', allin: 'All In', assist: 'Assist Me',
     needvision: 'Need Vision', missing: 'Enemy Missing', enemyvision: 'Enemy Vision', generic: 'Generic',
     bait: 'Bait', visioncleared: 'Vision Cleared',
-  } as Record<PingId, string>,
+  } as Record<LeaguePingId, string>,
 
   // main process
   limitations: [

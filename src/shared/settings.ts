@@ -1,3 +1,4 @@
+import { profileById } from './pingProfiles';
 import { DEFAULT_CLICK_EMOTE, DEFAULT_EMOTE_WHEEL } from './emoteCatalog';
 import {
   CUSTOM_NAME_MAX, MAX_CUSTOM_EMOTES, customHash, isCustomRef, normalizeClickEmote, normalizeEmoteWheel,
@@ -5,7 +6,7 @@ import {
 } from './emotes';
 import { LANGUAGE_PREFS, strings, type Lang, type LanguagePref } from './i18n';
 import { HOTKEY_PRIMARY_MODS, MOD, type Hotkey, vkLabel } from './keys';
-import { DEFAULT_CLICK_PING, DEFAULT_WHEEL, isPingId, type PingId } from './pings';
+import { DEFAULT_CLICK_PING, DEFAULT_WHEEL, isPingId, normalizeCustomPings, type PingId } from './pings';
 import type { Platform } from './platform';
 import { isTagColor } from './roomColors';
 import { parseRoomCode } from './roomCode';
@@ -25,6 +26,8 @@ export const keyboardTriggers = (platform: Platform): NamedTrigger[] =>
 
 export interface Settings {
   version: 1;
+  pingProfile: string;
+  customPings: PingId[];
   enabledOnStart: boolean;
   trigger: TriggerKey;
   dragThresholdPx: number;
@@ -79,6 +82,8 @@ export interface Identity {
 
 export const DEFAULT_SETTINGS: Settings = {
   version: 1,
+  pingProfile: 'lol',
+  customPings: [],
   enabledOnStart: true,
   trigger: 'alt',
   dragThresholdPx: 8,
@@ -217,6 +222,8 @@ export function normalizeSettings(raw: unknown, platform: Platform = 'win', iden
   const custom = customEmotes(r.customEmotes);
   return {
     version: 1,
+    pingProfile: r.pingProfile === 'custom' ? 'custom' : profileById(String(r.pingProfile)).id,
+    customPings: normalizeCustomPings(r.customPings),
     enabledOnStart: bool(r.enabledOnStart, 'enabledOnStart'),
     trigger: pingTrigger,
     dragThresholdPx: num(r.dragThresholdPx, 'dragThresholdPx'),
