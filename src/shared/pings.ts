@@ -104,7 +104,7 @@ export function normalizeCustomPings(raw: unknown): PingId[] {
 export const BATTLEGROUNDS_NATIVE_MARKERS = [
   { key: 'check', asset: 'TeammatePing_Check', id: createMarker({ name: '确认 / Yes', symbol: '✓', color: '#5bdb95', sound: '' }) },
   { key: 'x', asset: 'TeammatePing_X', id: createMarker({ name: '不要 / No', symbol: '✕', color: '#ff647c', sound: '' }) },
-  { key: 'question', asset: 'TeammatePing_Question', id: createMarker({ name: '疑问 / Question', symbol: '?', color: '#ffd166', sound: '' }) },
+  { key: 'attention', asset: 'TeammatePing_Exclamation', id: createMarker({ name: '警告 / Attention', symbol: '!', color: '#ff9f1c', sound: '' }) },
   { key: 'warp', asset: 'TeammatePing_Warp', id: createMarker({ name: '传递 / Pass', symbol: '↗', color: '#b999ff', sound: '' }) },
 ] as const;
 

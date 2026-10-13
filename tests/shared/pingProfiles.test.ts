@@ -34,7 +34,7 @@ describe('portable multi-game markers', () => {
   it('has eight valid distinct slots in every preset', () => {
     for (const p of PING_PROFILES) { expect(isValidWheel(p.wheel)).toBe(true); expect(isPingId(p.center)).toBe(true); }
     expect(profileById('bad').id).toBe('lol');
-    expect(PING_PROFILES[1].wheel.slice(0, 4).map((p) => pingById(p)?.symbol)).toEqual(['✓', '✕', '?', '↗']);
+    expect(PING_PROFILES[1].wheel.slice(0, 4).map((p) => pingById(p)?.symbol)).toEqual(['✓', '✕', '!', '↗']);
   });
   it('migrates old settings and persists custom settings and active wheel', () => {
     expect(normalizeSettings({})).toEqual(DEFAULT_SETTINGS);
@@ -70,8 +70,8 @@ describe('local Battlegrounds native art mapping', () => {
     const ids = PING_PROFILES[1].wheel.slice(0, 4);
     expect(ids).toEqual(BATTLEGROUNDS_NATIVE_MARKERS.map((m) => m.id));
     expect(BATTLEGROUNDS_NATIVE_MARKERS.map((m) => m.asset)).toEqual([
-      'TeammatePing_Check', 'TeammatePing_X', 'TeammatePing_Question', 'TeammatePing_Warp',
+      'TeammatePing_Check', 'TeammatePing_X', 'TeammatePing_Exclamation', 'TeammatePing_Warp',
     ]);
-    for (const id of ids) expect(pingIconUrl(pingById(id)!)).toMatch(/^lolping:\/\/ping-icons\/battlegrounds\/(check|x|question|warp)\.png$/);
+    for (const id of ids) expect(pingIconUrl(pingById(id)!)).toMatch(/^lolping:\/\/ping-icons\/battlegrounds\/(check|x|attention|warp)\.png$/);
   });
 });
