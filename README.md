@@ -36,11 +36,16 @@ npm run typecheck
 npm run test:helper
 npm test
 npm run build
+npm run test:ui
 npm run build:site
 npm run dist
 ```
 
 Windows installers are written to `release/`. The package retains the `lolPing` product name but uses a separate application ID and `%APPDATA%/MultiPing` settings directory. Updates now point to **ygpdzd/lolPing**, never the upstream release feed. Until this fork publishes a release, manual update checks may report no available release.
+
+## Electron UI smoke test
+
+Run `npm run test:ui` to build and exercise the real Electron app, preload and IPC: three presets, custom marker CRUD, click-to-place, in-use deletion protection, JSON export/import, invalid import rejection and persisted settings. Requires a desktop session and installed Electron binary. It briefly opens the app with isolated temporary settings, leaving your normal configuration untouched. Screenshots and exported test data are saved under `output/electron-smoke/`; isolated settings remain in the OS temp directory for diagnosis. This does not replace two-peer networking, real drag-and-drop or in-game fullscreen testing.
 
 ## Security and compatibility
 

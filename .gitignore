@@ -8,3 +8,8 @@ native/hook-helper/build/
 .DS_Store
 tools/extract-assets/.cache/
 tools/extract-assets/__pycache__/
+
+# Local UI verification artifacts
+output/
+.playwright-cli/
+logs/

@@ -39,11 +39,16 @@ npm run typecheck
 npm run test:helper
 npm test
 npm run build
+npm run test:ui
 npm run build:site
 npm run dist
 ```
 
 Windows 安装包输出到 `release/`。版本为 **0.6.0**，安装程序目前保留 `lolPing` 产品名称；本 fork 使用独立应用 ID 和 `%APPDATA%/MultiPing` 设置目录，不覆盖上游配置。更新来源已切换为 `ygpdzd/lolPing`，尚未发布 Release 时手动更新检查可能提示没有可用版本。
+
+## Electron UI 冒烟测试
+
+运行 `npm run test:ui` 会先构建，再使用真实 Electron、preload 和 IPC 检查三个预设、自定义标识增删改、点击放入轮盘、使用中删除保护、JSON 导入导出、无效导入拒绝以及磁盘保存。需要可用的桌面会话和 Electron 二进制；测试会短暂打开应用窗口，使用独立临时配置，不修改正式设置。截图和导出的测试配置保存在 `output/electron-smoke/`，临时配置目录保留在系统临时目录中供排查。此测试不替代双机联网、真实鼠标拖放及游戏全屏覆盖测试。
 
 ## 架构
 

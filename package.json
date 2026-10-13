@@ -25,7 +25,8 @@
     "dist:mac": "npm run build:helper && electron-vite build && electron-builder --mac --arm64 --publish never",
     "dev:site": "vite --config site/vite.config.ts",
     "build:site": "vite build --config site/vite.config.ts",
-    "media": "npm run build:site && electron tools/capture-media/capture.mjs"
+    "media": "npm run build:site && electron tools/capture-media/capture.mjs",
+    "test:ui": "npm run build && node tools/run-smoke-electron.mjs"
   },
   "devDependencies": {
     "@fluentui/react-components": "9.74.9",
