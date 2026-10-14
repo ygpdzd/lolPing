@@ -5,7 +5,7 @@ export interface PingProfile { id: string; name: string; nameEn: string; wheel: 
 const marker = (name: string, symbol: string, color: string): PingId => createMarker({ name, symbol, color, sound: '' });
 const bg = [
   marker('确认 / Yes', '✓', '#5bdb95'), marker('不要 / No', '✕', '#ff647c'),
-  marker('警告 / Attention', '!', '#ff9f1c'), marker('传递 / Pass', '↗', '#b999ff'),
+  marker('疑问 / Question', '?', '#ffd166'), marker('传递 / Pass', '↗', '#b999ff'),
   marker('保留 / Keep', '◆', '#60d7ee'), marker('刷新 / Refresh', '↻', '#72b5ff'),
   marker('升级 / Tier up', '↑', '#ffb968'), marker('三连 / Triple', '3', '#f18acc'),
 ];

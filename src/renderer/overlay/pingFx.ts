@@ -1,5 +1,5 @@
 import type { PingTag } from '../../shared/ipc';
-import { FALLBACK_TEXTURE, pingIconUrl, textureUrl, type PingDef } from '../../shared/pings';
+import { FALLBACK_TEXTURE, isNativeBattlegroundsMarker, pingIconUrl, textureUrl, type PingDef } from '../../shared/pings';
 import { TAG_COLORS } from '../../shared/roomColors';
 
 /** Safety ceiling: past this many pings on screen the oldest go early, so a ping flood can't bog the overlay down. */
@@ -47,9 +47,11 @@ export function spawnPing(layer: HTMLElement, def: PingDef, x: number, y: number
     icon.alt = def.name;
     pop.append(icon);
     art.append(pop);
-    const label = div('marker-label');
-    label.textContent = def.name;
-    root.append(label);
+    if (!isNativeBattlegroundsMarker(def.id)) {
+      const label = div('marker-label');
+      label.textContent = def.name;
+      root.append(label);
+    }
   } else if (def.art.length === 2) {
     const clash = div('clash');
     clash.append(img(def.art[0], 'a1'), img(def.art[1], 'a2'));

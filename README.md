@@ -7,7 +7,7 @@ A fork of [darrenprx/lolPing](https://github.com/darrenprx/lolPing), extending t
 ## What's new in 0.6.0
 
 - League of Legends: original wheel, animations and sounds preserved.
-- Battlegrounds Duos: Yes, No, Attention, Pass, plus Keep, Refresh, Tier up and Triple callouts. The first four can use locally extracted Hearthstone teammate-ping artwork when installed; otherwise portable symbols are used. Blizzard artwork is never committed or shared.
+- Battlegrounds Duos: Yes, No, Question, Pass, plus Keep, Refresh, Tier up and Triple callouts. The first four can use locally extracted Hearthstone teammate-ping artwork when installed; the native markers show only their image, without a text label. Otherwise portable symbols are used. Blizzard artwork is never committed or shared.
 - Co-op/FPS: Danger, Group, Move, Attack, Help, Wait, Search and Done.
 - Up to 64 custom markers with a name, symbol/emoji, color and optional bundled sound. Create, edit, delete and assign them to wheel slots or the center.
 - Validated JSON import/export for sharing or backing up layouts and the custom library.

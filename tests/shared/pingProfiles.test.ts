@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { createMarker, isPingId, normalizeCustomPings, pingById, pingIconUrl } from '../../src/shared/pings';
+import { BATTLEGROUNDS_NATIVE_MARKERS, createMarker, isNativeBattlegroundsMarker, isPingId, normalizeCustomPings, pingById, pingIconUrl } from '../../src/shared/pings';
 import { PING_PROFILES, exportPingPack, importPingPack, profileById, profilePool } from '../../src/shared/pingProfiles';
 import { DEFAULT_SETTINGS, mergeSettings, normalizeSettings } from '../../src/shared/settings';
 import { isValidWheel } from '../../src/shared/wheelLayout';
@@ -34,7 +34,7 @@ describe('portable multi-game markers', () => {
   it('has eight valid distinct slots in every preset', () => {
     for (const p of PING_PROFILES) { expect(isValidWheel(p.wheel)).toBe(true); expect(isPingId(p.center)).toBe(true); }
     expect(profileById('bad').id).toBe('lol');
-    expect(PING_PROFILES[1].wheel.slice(0, 4).map((p) => pingById(p)?.symbol)).toEqual(['✓', '✕', '!', '↗']);
+    expect(PING_PROFILES[1].wheel.slice(0, 4).map((p) => pingById(p)?.symbol)).toEqual(['✓', '✕', '?', '↗']);
   });
   it('migrates old settings and persists custom settings and active wheel', () => {
     expect(normalizeSettings({})).toEqual(DEFAULT_SETTINGS);
@@ -65,13 +65,14 @@ describe('portable multi-game markers', () => {
 });
 
 describe('local Battlegrounds native art mapping', () => {
-  it('uses only the four allowlisted local URLs for the built-in first four markers', async () => {
-    const { BATTLEGROUNDS_NATIVE_MARKERS } = await import('../../src/shared/pings');
+  it('uses only the four allowlisted local URLs for the built-in first four markers', () => {
     const ids = PING_PROFILES[1].wheel.slice(0, 4);
     expect(ids).toEqual(BATTLEGROUNDS_NATIVE_MARKERS.map((m) => m.id));
     expect(BATTLEGROUNDS_NATIVE_MARKERS.map((m) => m.asset)).toEqual([
-      'TeammatePing_Check', 'TeammatePing_X', 'TeammatePing_Exclamation', 'TeammatePing_Warp',
+      'TeammatePing_Check', 'TeammatePing_X', 'TeammatePing_Question', 'TeammatePing_Warp',
     ]);
-    for (const id of ids) expect(pingIconUrl(pingById(id)!)).toMatch(/^lolping:\/\/ping-icons\/battlegrounds\/(check|x|attention|warp)\.png$/);
+    for (const id of ids) expect(pingIconUrl(pingById(id)!)).toMatch(/^lolping:\/\/ping-icons\/battlegrounds\/(check|x|question|warp)\.png$/);
+    expect(ids.every(isNativeBattlegroundsMarker)).toBe(true);
+    expect(isNativeBattlegroundsMarker(id)).toBe(false);
   });
 });
